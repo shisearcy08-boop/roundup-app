@@ -304,22 +304,15 @@ function AIScreen() {
     try {
       const systemPrompt = `You are a friendly, concise AI financial assistant inside the RoundUp app — a micro-savings app that rounds up purchases to the nearest dollar and saves the spare change. The user's name is Alex. They have saved $187.34 so far toward a $500 emergency fund goal. Their recent transactions include: coffee ($4.50), groceries ($31.73), Uber ($12.40), Netflix ($15.99), gas ($48.22), Chipotle ($13.85). Keep responses short (2–4 sentences), warm, and actionable. Use dollar amounts and specifics where possible. Avoid generic advice.`;
 
-      const res = await fetch("https://api.anthropic.com/v1/messages", {
-        method: "POST",
-        headers: { 
-          "Content-Type": "application/json",
-          "anthropic-dangerous-disable-content-security-policy": "true",
-          "anthropic-version": "2023-06-01",
-        },
-        body: JSON.stringify({
-          model: "claude-sonnet-4-20250514",
-          max_tokens: 1000,
-          system: systemPrompt,
-          messages: newMsgs.map(m => ({ role: m.role, content: m.text })),
-        }),
-      });
-      const data = await res.json();
-      const reply = data.content?.[0]?.text || "Sorry, I couldn't get a response.";
+        // Simulated AI responses for deployed version (no backend proxy yet)
+      const responses = [
+        `Great question! Based on your spending, you've saved ${totalSaved} this week alone. At this pace you'll hit your $500 goal by late August! 🎯`,
+        "Your biggest round-up opportunity is groceries — you shop frequently and those small cents add up fast. Consider enabling 2× round-ups on grocery purchases.",
+        "Looking at your transactions, you spend an average of $18/day. Even saving just the round-ups puts you ahead of 60% of Americans your age.",
+        "Your Netflix and Uber round-ups are small but consistent — that's actually the best kind of saving. Slow and steady wins the race! 💪",
+        "Based on your current savings rate, I'd recommend the Balanced investment strategy. It could earn you an extra ~$18 by year end on top of your round-ups.",
+      ];
+      const reply = responses[Math.floor(Math.random() * responses.length)];
       setMessages(prev => [...prev, { role: "assistant", text: reply }]);
     } catch {
       setMessages(prev => [...prev, { role: "assistant", text: "Hmm, something went wrong. Try again!" }]);
